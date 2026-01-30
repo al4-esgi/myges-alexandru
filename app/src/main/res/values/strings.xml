@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Skeleton</string>
+
+    <!-- || SplashScreen || -->
+    <string name="splash_title">Splash in english</string>
+
+    <!-- || SignInScreen || -->
+    <string name="signin_connection">Connection</string>
+
+    <!-- || HomeScreen || -->
+    <string name="home_title">Home</string>
+
+    <!-- || Global || -->
+    <string name="global_welcome">Welcome!</string>
+
+</resources>
