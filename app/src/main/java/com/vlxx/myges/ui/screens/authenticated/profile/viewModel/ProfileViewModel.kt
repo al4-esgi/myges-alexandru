@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vlxx.myges.data.dtos.ProfileResponseDto
 import com.vlxx.myges.domain.repositories.ProfileRepository
+import com.vlxx.myges.domain.repositories.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +18,8 @@ sealed class ProfileUiState {
 }
 
 class ProfileViewModel(
-    private val profileRepository: ProfileRepository
+    private val profileRepository: ProfileRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
@@ -39,6 +41,17 @@ class ProfileViewModel(
                 Timber.e(e, "Error loading profile - Message: ${e.message}")
                 e.printStackTrace()
                 _uiState.value = ProfileUiState.Error(e.message ?: "Unknown error")
+            }
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            try {
+                Timber.d("Logging out...")
+                userRepository.logout()
+            } catch (e: Exception) {
+                Timber.e(e, "Error during logout")
             }
         }
     }

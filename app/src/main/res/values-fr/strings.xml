@@ -50,6 +50,7 @@
     <string name="profile_emergency_telephone">Téléphone</string>
     <string name="profile_emergency_work_phone">Téléphone Travail</string>
     <string name="profile_no_emergency_contact">Aucun contact d\'urgence enregistré</string>
+    <string name="profile_logout">Déconnexion</string>
 
     <!-- || Global || -->
     <string name="global_welcome">Bienvenue !</string>

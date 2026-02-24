@@ -39,7 +39,10 @@ fun ProfileScreen(
             LoadingContent()
         }
         is ProfileUiState.Success -> {
-            ProfileContent(profile = state.profile)
+            ProfileContent(
+                profile = state.profile,
+                onLogout = viewModel::logout
+            )
         }
         is ProfileUiState.Error -> {
             ErrorContent(
@@ -105,6 +108,7 @@ private fun ErrorContent(
 @Composable
 private fun ProfileContent(
     profile: ProfileResponseDto,
+    onLogout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -245,6 +249,17 @@ private fun ProfileContent(
             }
         }
 
+        // Logout Button
+        Button(
+            onClick = onLogout,
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.error
+            )
+        ) {
+            Text(text = stringResource(R.string.profile_logout))
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
@@ -383,7 +398,8 @@ private fun ProfileScreenPreview() {
                 links = ProfileLinksDto(
                     photo = LinkDto(href = "https://ges-dl.kordis.fr/public/dEkj-aOcIw52B9RsgY-op2htNPxbE4A4CZSMwXEBz3M")
                 )
-            )
+            ),
+            onLogout = {}
         )
     }
 }
