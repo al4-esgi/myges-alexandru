@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.bundles.logging)
     implementation(libs.bundles.serializable)
     implementation(libs.bundles.datastore)
+    implementation(libs.bundles.image)
 
     ksp(libs.moshi.codegen)
 }

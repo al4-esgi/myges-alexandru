@@ -17,6 +17,11 @@
 
     <!-- || HomeScreen || -->
     <string name="home_title">Accueil</string>
+    <string name="home_loading">Chargement des actualités…</string>
+    <string name="home_error">Erreur lors du chargement des actualités</string>
+    <string name="home_retry">Réessayer</string>
+    <string name="home_empty">Aucune actualité disponible</string>
+    <string name="home_news_title">Actualités</string>
 
     <!-- || AgendaScreen || -->
     <string name="agenda_title">Agenda</string>

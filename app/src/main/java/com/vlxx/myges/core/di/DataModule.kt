@@ -6,14 +6,19 @@ import com.vlxx.myges.data.network.Api
 import com.vlxx.myges.data.network.AuthInterceptor
 import com.vlxx.myges.data.network.LoggingInterceptor
 import com.vlxx.myges.data.repositories.AgendaRepositoryImpl
+import com.vlxx.myges.data.repositories.BannerRepositoryImpl
 import com.vlxx.myges.data.repositories.LocalSettingsRepositoryImpl
+import com.vlxx.myges.data.repositories.NewsRepositoryImpl
 import com.vlxx.myges.data.repositories.ProfileRepositoryImpl
 import com.vlxx.myges.data.repositories.UserRepositoryImpl
 import com.vlxx.myges.domain.repositories.AgendaRepository
+import com.vlxx.myges.domain.repositories.BannerRepository
 import com.vlxx.myges.domain.repositories.LocalSettingsRepository
+import com.vlxx.myges.domain.repositories.NewsRepository
 import com.vlxx.myges.domain.repositories.ProfileRepository
 import com.vlxx.myges.domain.repositories.UserRepository
 import com.vlxx.myges.ui.screens.authenticated.agenda.viewModel.AgendaViewModel
+import com.vlxx.myges.ui.screens.authenticated.home.viewModel.HomeViewModel
 import com.vlxx.myges.ui.screens.authenticated.profile.viewModel.ProfileViewModel
 import com.vlxx.myges.ui.screens.splash.viewModel.SplashViewModel
 import com.vlxx.myges.ui.screens.unauthenticated.signInScreen.viewModel.SignInViewModel
@@ -56,11 +61,14 @@ val dataModule = module {
     singleOf(::LocalSettingsRepositoryImpl) { bind<LocalSettingsRepository>() }
     singleOf(::ProfileRepositoryImpl) { bind<ProfileRepository>() }
     singleOf(::AgendaRepositoryImpl) { bind<AgendaRepository>() }
+    singleOf(::BannerRepositoryImpl) { bind<BannerRepository>() }
+    singleOf(::NewsRepositoryImpl) { bind<NewsRepository>() }
 
     viewModelOf(::SplashViewModel)
     viewModel { SignInViewModel(get(), get()) }
     viewModelOf(::ProfileViewModel)
     viewModelOf(::AgendaViewModel)
+    viewModelOf(::HomeViewModel)
 
 }
 

@@ -1,6 +1,8 @@
 package com.vlxx.myges.data.network
 
 import com.vlxx.myges.data.dtos.AgendaApiResponseDto
+import com.vlxx.myges.data.dtos.BannerApiResponseDto
+import com.vlxx.myges.data.dtos.NewsApiResponseDto
 import com.vlxx.myges.data.dtos.ProfileApiResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
@@ -20,5 +22,11 @@ interface Api {
         @Query("start") start: Long,
         @Query("end") end: Long
     ): AgendaApiResponseDto
+
+    @GET("me/news/banners")
+    suspend fun getBanners(): BannerApiResponseDto
+
+    @GET("me/news")
+    suspend fun getNews(): NewsApiResponseDto
 
 }
