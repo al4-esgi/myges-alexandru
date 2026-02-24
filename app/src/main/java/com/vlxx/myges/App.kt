@@ -12,6 +12,11 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        // Initialize Timber for logging
+        if (BuildConfig.DEBUG) {
+            Timber.plant(LineNumberDebugTree())
+        }
+
         startKoin {
             androidContext(this@App)
             modules(
@@ -21,3 +26,4 @@ class App : Application() {
         }
     }
 }
+

@@ -1,11 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Skeleton</string>
-
-    <!-- || SplashScreen || -->
-    <string name="splash_title">Splash en français</string>
+    <string name="app_name">MyGes</string>
 
     <!-- || SignInScreen || -->
     <string name="signin_connection">Connexion</string>
+    <string name="signin_app_title">MyGES</string>
+    <string name="signin_email_label">Email</string>
+    <string name="signin_email_placeholder">prenom.nom@esgi.fr</string>
+    <string name="signin_password_label">Mot de passe</string>
+    <string name="signin_error_empty_fields">Veuillez remplir tous les champs</string>
+    <string name="signin_error_invalid_credentials">Identifiants incorrects</string>
+    <string name="signin_error_network">Erreur de connexion</string>
+    <string name="signin_error_unknown">Une erreur est survenue : %1$s</string>
+    <string name="signin_error_dialog_title">Erreur de connexion</string>
+    <string name="signin_error_dialog_ok">OK</string>
 
     <!-- || HomeScreen || -->
     <string name="home_title">Accueil</string>

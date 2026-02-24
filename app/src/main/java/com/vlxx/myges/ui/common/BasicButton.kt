@@ -11,8 +11,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BasicButton(title: Int, isLoading: Boolean, onClick: () -> Unit) {
-    Button(onClick, enabled = !isLoading) {
+fun BasicButton(
+    title: Int,
+    isLoading: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        enabled = !isLoading,
+        modifier = modifier
+    ) {
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White)
         } else {
