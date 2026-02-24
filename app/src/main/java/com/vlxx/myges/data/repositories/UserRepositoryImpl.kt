@@ -54,7 +54,7 @@ class UserRepositoryImpl(
 
             // Get user profile to verify authentication
             val profile = api.getProfile()
-            Timber.d("Profile loaded: ${profile.result.firstname} ${profile.result.lastname}")
+            Timber.d("Profile loaded: ${profile.result.email} ${profile.result.name}")
 
             setAppState(AppState.AUTHENTICATED)
         } catch (e: Exception) {

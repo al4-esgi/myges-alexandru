@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 object HomeRoute
 
 @Serializable
-data class ProfileRoute(val userId: String? = null)
+object ProfileRoute
 

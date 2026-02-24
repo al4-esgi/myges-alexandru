@@ -6,9 +6,12 @@ import com.vlxx.myges.data.network.Api
 import com.vlxx.myges.data.network.AuthInterceptor
 import com.vlxx.myges.data.network.LoggingInterceptor
 import com.vlxx.myges.data.repositories.LocalSettingsRepositoryImpl
+import com.vlxx.myges.data.repositories.ProfileRepositoryImpl
 import com.vlxx.myges.data.repositories.UserRepositoryImpl
 import com.vlxx.myges.domain.repositories.LocalSettingsRepository
+import com.vlxx.myges.domain.repositories.ProfileRepository
 import com.vlxx.myges.domain.repositories.UserRepository
+import com.vlxx.myges.ui.screens.authenticated.profile.viewModel.ProfileViewModel
 import com.vlxx.myges.ui.screens.splash.viewModel.SplashViewModel
 import com.vlxx.myges.ui.screens.unauthenticated.signInScreen.viewModel.SignInViewModel
 import okhttp3.OkHttpClient
@@ -48,9 +51,11 @@ val dataModule = module {
 
     singleOf(::UserRepositoryImpl) { bind<UserRepository>() }
     singleOf(::LocalSettingsRepositoryImpl) { bind<LocalSettingsRepository>() }
+    singleOf(::ProfileRepositoryImpl) { bind<ProfileRepository>() }
 
     viewModelOf(::SplashViewModel)
     viewModel { SignInViewModel(get(), get()) }
+    viewModelOf(::ProfileViewModel)
 
 }
 

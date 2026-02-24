@@ -1,6 +1,6 @@
 package com.vlxx.myges.data.network
 
-import com.vlxx.myges.data.dtos.ProfileResponseDto
+import com.vlxx.myges.data.dtos.ProfileApiResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -11,7 +11,7 @@ interface Api {
     suspend fun authenticate(@Header("Authorization") basicAuth: String): Response<Unit>
 
     @GET("me/profile")
-    suspend fun getProfile(): ProfileResponseDto
+    suspend fun getProfile(): ProfileApiResponseDto
 
 }
 

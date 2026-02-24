@@ -18,6 +18,39 @@
     <!-- || HomeScreen || -->
     <string name="home_title">Accueil</string>
 
+    <!-- || ProfileScreen || -->
+    <string name="profile_title">Profil</string>
+    <string name="profile_loading">Chargement du profil…</string>
+    <string name="profile_error">Erreur lors du chargement du profil</string>
+    <string name="profile_retry">Réessayer</string>
+    <string name="profile_section_personal_info">Informations Personnelles</string>
+    <string name="profile_section_contact">Contact</string>
+    <string name="profile_section_address">Adresse</string>
+    <string name="profile_section_emergency">Contact d\'Urgence</string>
+    <string name="profile_student_id">Numéro Étudiant</string>
+    <string name="profile_ine">INE</string>
+    <string name="profile_civility">Civilité</string>
+    <string name="profile_firstname">Prénom</string>
+    <string name="profile_lastname">Nom</string>
+    <string name="profile_birthday">Date de Naissance</string>
+    <string name="profile_birthplace">Lieu de Naissance</string>
+    <string name="profile_birth_country">Pays de Naissance</string>
+    <string name="profile_nationality">Nationalité</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_personal_email">Email Personnel</string>
+    <string name="profile_mobile">Mobile</string>
+    <string name="profile_telephone">Téléphone</string>
+    <string name="profile_address">Adresse</string>
+    <string name="profile_city">Ville</string>
+    <string name="profile_zipcode">Code Postal</string>
+    <string name="profile_country">Pays</string>
+    <string name="profile_emergency_name">Nom</string>
+    <string name="profile_emergency_type">Type</string>
+    <string name="profile_emergency_mobile">Mobile</string>
+    <string name="profile_emergency_telephone">Téléphone</string>
+    <string name="profile_emergency_work_phone">Téléphone Travail</string>
+    <string name="profile_no_emergency_contact">Aucun contact d\'urgence enregistré</string>
+
     <!-- || Global || -->
     <string name="global_welcome">Bienvenue !</string>
 
