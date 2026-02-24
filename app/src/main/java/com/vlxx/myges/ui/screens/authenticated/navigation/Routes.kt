@@ -6,5 +6,8 @@ import kotlinx.serialization.Serializable
 object HomeRoute
 
 @Serializable
+object AgendaRoute
+
+@Serializable
 object ProfileRoute
 

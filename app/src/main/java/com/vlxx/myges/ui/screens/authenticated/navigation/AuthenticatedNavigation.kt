@@ -2,6 +2,7 @@ package com.vlxx.myges.ui.screens.authenticated.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
@@ -17,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.vlxx.myges.R
+import com.vlxx.myges.ui.screens.authenticated.agenda.screen.AgendaScreen
 import com.vlxx.myges.ui.screens.authenticated.home.HomeScreen
 import com.vlxx.myges.ui.screens.authenticated.profile.screen.ProfileScreen
 
@@ -26,6 +28,7 @@ sealed class BottomNavItem(
     val labelRes: Int
 ) {
     data object Home : BottomNavItem(HomeRoute, Icons.Default.Home, R.string.home_title)
+    data object Agenda : BottomNavItem(AgendaRoute, Icons.Default.CalendarToday, R.string.agenda_title)
     data object Profile : BottomNavItem(ProfileRoute, Icons.Default.Person, R.string.profile_title)
 }
 
@@ -37,6 +40,7 @@ fun AuthenticatedNavigation() {
 
     val bottomNavItems = listOf(
         BottomNavItem.Home,
+        BottomNavItem.Agenda,
         BottomNavItem.Profile
     )
 
@@ -74,6 +78,9 @@ fun AuthenticatedNavigation() {
         ) {
             composable<HomeRoute> {
                 HomeScreen()
+            }
+            composable<AgendaRoute> {
+                AgendaScreen()
             }
             composable<ProfileRoute> {
                 ProfileScreen()

@@ -17,6 +17,15 @@
     <!-- || HomeScreen || -->
     <string name="home_title">Home</string>
 
+    <!-- || AgendaScreen || -->
+    <string name="agenda_title">Agenda</string>
+    <string name="agenda_loading">Loading agenda…</string>
+    <string name="agenda_error">Error loading agenda</string>
+    <string name="agenda_retry">Retry</string>
+    <string name="agenda_refresh">Refresh</string>
+    <string name="agenda_empty">No events scheduled</string>
+    <string name="agenda_event_untitled">Untitled Event</string>
+
     <!-- || ProfileScreen || -->
     <string name="profile_title">Profile</string>
     <string name="profile_loading">Loading profile…</string>
