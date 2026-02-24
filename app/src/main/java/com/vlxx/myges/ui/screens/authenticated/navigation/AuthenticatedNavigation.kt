@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,6 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.vlxx.myges.R
 import com.vlxx.myges.ui.screens.authenticated.agenda.screen.AgendaScreen
+import com.vlxx.myges.ui.screens.authenticated.grades.screen.GradesScreen
 import com.vlxx.myges.ui.screens.authenticated.home.HomeScreen
 import com.vlxx.myges.ui.screens.authenticated.profile.screen.ProfileScreen
 
@@ -29,6 +31,7 @@ sealed class BottomNavItem(
 ) {
     data object Home : BottomNavItem(HomeRoute, Icons.Default.Home, R.string.home_title)
     data object Agenda : BottomNavItem(AgendaRoute, Icons.Default.CalendarToday, R.string.agenda_title)
+    data object Grades : BottomNavItem(GradesRoute, Icons.Default.School, R.string.grades_title)
     data object Profile : BottomNavItem(ProfileRoute, Icons.Default.Person, R.string.profile_title)
 }
 
@@ -41,6 +44,7 @@ fun AuthenticatedNavigation() {
     val bottomNavItems = listOf(
         BottomNavItem.Home,
         BottomNavItem.Agenda,
+        BottomNavItem.Grades,
         BottomNavItem.Profile
     )
 
@@ -81,6 +85,9 @@ fun AuthenticatedNavigation() {
             }
             composable<AgendaRoute> {
                 AgendaScreen()
+            }
+            composable<GradesRoute> {
+                GradesScreen()
             }
             composable<ProfileRoute> {
                 ProfileScreen()

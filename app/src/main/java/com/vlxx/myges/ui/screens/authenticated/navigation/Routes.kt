@@ -9,5 +9,8 @@ object HomeRoute
 object AgendaRoute
 
 @Serializable
+object GradesRoute
+
+@Serializable
 object ProfileRoute
 

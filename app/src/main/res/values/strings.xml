@@ -31,6 +31,14 @@
     <string name="agenda_empty">No events scheduled</string>
     <string name="agenda_event_untitled">Untitled Event</string>
 
+    <!-- || GradesScreen || -->
+    <string name="grades_title">Grades</string>
+    <string name="grades_loading">Loading grades…</string>
+    <string name="grades_error">Error loading grades</string>
+    <string name="grades_retry">Retry</string>
+    <string name="grades_empty">No grades available</string>
+    <string name="grades_details">Details</string>
+
     <!-- || ProfileScreen || -->
     <string name="profile_title">Profile</string>
     <string name="profile_loading">Loading profile…</string>

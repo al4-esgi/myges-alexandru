@@ -2,11 +2,13 @@ package com.vlxx.myges.data.network
 
 import com.vlxx.myges.data.dtos.AgendaApiResponseDto
 import com.vlxx.myges.data.dtos.BannerApiResponseDto
+import com.vlxx.myges.data.dtos.GradesApiResponseDto
 import com.vlxx.myges.data.dtos.NewsApiResponseDto
 import com.vlxx.myges.data.dtos.ProfileApiResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface Api {
@@ -28,5 +30,8 @@ interface Api {
 
     @GET("me/news")
     suspend fun getNews(): NewsApiResponseDto
+
+    @GET("me/{year}/grades")
+    suspend fun getGrades(@Path("year") year: Int): GradesApiResponseDto
 
 }
