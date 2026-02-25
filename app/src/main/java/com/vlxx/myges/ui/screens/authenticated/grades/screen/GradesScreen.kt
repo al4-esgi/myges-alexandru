@@ -134,14 +134,14 @@ private fun GradesContent(
                 ) {
                     Column {
                         Text(
-                            text = "Notes",
+                            text = stringResource(R.string.grades_title),
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                         if (overallAverage != null) {
                             Text(
-                                text = "Moyenne générale : ${String.format(Locale.getDefault(), "%.2f", overallAverage)}/20",
+                                text = stringResource(R.string.grades_overall_average, String.format(Locale.getDefault(), "%.2f", overallAverage)),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
                             )
@@ -165,7 +165,7 @@ private fun GradesContent(
                         FilterChip(
                             selected = selectedTrimester == null,
                             onClick = { onTrimesterChange(null) },
-                            label = { Text("Tous") }
+                            label = { Text(stringResource(R.string.grades_filter_all)) }
                         )
                     }
                     items(availableTrimesters) { trimester ->
@@ -232,7 +232,7 @@ private fun GradesContent(
                             shape = RoundedCornerShape(8.dp)
                         ) {
                             Text(
-                                text = "Moy. ${String.format(Locale.getDefault(), "%.2f", trimesterAvg)}/20",
+                                text = stringResource(R.string.grades_trimester_average, String.format(Locale.getDefault(), "%.2f", trimesterAvg)),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 color = gradeColorFor(trimesterAvg),
@@ -354,7 +354,7 @@ private fun CourseCard(course: CourseDto, modifier: Modifier = Modifier) {
                             shape = RoundedCornerShape(8.dp)
                         ) {
                             Text(
-                                text = "En attente",
+                                text = stringResource(R.string.grades_pending),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -384,10 +384,10 @@ private fun CourseCard(course: CourseDto, modifier: Modifier = Modifier) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (!course.ects.isNullOrBlank() && course.ects != "N.C.") {
-                        MiniChip(text = "ECTS ${course.ects}")
+                        MiniChip(text = stringResource(R.string.grades_ects, course.ects))
                     }
                     if (!course.coef.isNullOrBlank() && course.coef != "N.C.") {
-                        MiniChip(text = "Coef ${course.coef}")
+                        MiniChip(text = stringResource(R.string.grades_coef, course.coef))
                     }
                     if (!course.letterMark.isNullOrBlank() && course.letterMark != "F") {
                         MiniChip(
@@ -410,7 +410,7 @@ private fun CourseCard(course: CourseDto, modifier: Modifier = Modifier) {
                         if (hasGrades) {
                             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                 Text(
-                                    text = "Notes CC",
+                                    text = stringResource(R.string.grades_cc_notes),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -426,7 +426,7 @@ private fun CourseCard(course: CourseDto, modifier: Modifier = Modifier) {
                         if ((course.ccAverage ?: 0.0) > 0.0) {
                             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                 Text(
-                                    text = "Moy. CC",
+                                    text = stringResource(R.string.grades_cc_average),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -443,7 +443,7 @@ private fun CourseCard(course: CourseDto, modifier: Modifier = Modifier) {
                         if ((course.exam ?: 0.0) > 0.0) {
                             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                 Text(
-                                    text = "Examen",
+                                    text = stringResource(R.string.grades_exam),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -463,14 +463,14 @@ private fun CourseCard(course: CourseDto, modifier: Modifier = Modifier) {
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         if ((course.absences ?: 0) > 0) {
                             Text(
-                                text = "⚠️ ${course.absences} absence(s)",
+                                text = stringResource(R.string.grades_absences, course.absences!!),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.error
                             )
                         }
                         if ((course.lates ?: 0) > 0) {
                             Text(
-                                text = "⏰ ${course.lates} retard(s)",
+                                text = stringResource(R.string.grades_lates, course.lates!!),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = Color(0xFFFF9800)
                             )

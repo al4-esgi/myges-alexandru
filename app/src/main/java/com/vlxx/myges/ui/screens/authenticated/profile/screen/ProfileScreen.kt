@@ -2,16 +2,24 @@ package com.vlxx.myges.ui.screens.authenticated.profile.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,34 +43,16 @@ fun ProfileScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     when (val state = uiState) {
-        is ProfileUiState.Loading -> {
-            LoadingContent()
-        }
-        is ProfileUiState.Success -> {
-            ProfileContent(
-                profile = state.profile,
-                onLogout = viewModel::logout
-            )
-        }
-        is ProfileUiState.Error -> {
-            ErrorContent(
-                message = state.message,
-                onRetry = viewModel::loadProfile
-            )
-        }
+        is ProfileUiState.Loading -> LoadingContent()
+        is ProfileUiState.Success -> ProfileContent(profile = state.profile, onLogout = viewModel::logout)
+        is ProfileUiState.Error -> ErrorContent(message = state.message, onRetry = viewModel::loadProfile)
     }
 }
 
 @Composable
 private fun LoadingContent(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
             CircularProgressIndicator()
             Text(
                 text = stringResource(R.string.profile_loading),
@@ -74,33 +64,16 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ErrorContent(
-    message: String,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
+private fun ErrorContent(message: String, onRetry: () -> Unit, modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.padding(32.dp)
         ) {
-            Text(
-                text = stringResource(R.string.profile_error),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.error
-            )
-            Text(
-                text = message,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Button(onClick = onRetry) {
-                Text(stringResource(R.string.profile_retry))
-            }
+            Text(text = stringResource(R.string.profile_error), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.error)
+            Text(text = message, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Button(onClick = onRetry) { Text(stringResource(R.string.profile_retry)) }
         }
     }
 }
@@ -111,242 +84,263 @@ private fun ProfileContent(
     onLogout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
-    ) {
-        // Title
-        Text(
-            text = stringResource(R.string.profile_title),
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
+    LazyColumn(modifier = modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 32.dp)) {
 
-        // Profile Header with Photo
-        ProfileHeader(profile = profile)
-
-        // Personal Information Section
-        ProfileSection(title = stringResource(R.string.profile_section_personal_info)) {
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_student_id),
-                value = profile.studentId
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_ine),
-                value = profile.ine
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_civility),
-                value = profile.civility
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_firstname),
-                value = profile.firstname
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_lastname),
-                value = profile.name
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_birthday),
-                value = profile.birthday?.let { formatDate(it) }
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_birthplace),
-                value = profile.birthplace
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_birth_country),
-                value = profile.birthCountry
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_nationality),
-                value = profile.nationality
-            )
-        }
-
-        // Contact Section
-        ProfileSection(title = stringResource(R.string.profile_section_contact)) {
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_email),
-                value = profile.email
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_personal_email),
-                value = profile.personalMail
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_mobile),
-                value = profile.mobile
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_telephone),
-                value = profile.telephone
-            )
-        }
-
-        // Address Section
-        ProfileSection(title = stringResource(R.string.profile_section_address)) {
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_address),
-                value = buildString {
-                    profile.address1?.let { append(it) }
-                    if (!profile.address2.isNullOrBlank()) {
-                        append("\n${profile.address2}")
+        // ── Top header banner ─────────────────────────────────────────
+        item {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primary)
+                    .padding(horizontal = 20.dp, vertical = 28.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    // Avatar circle with photo or initials fallback
+                    val photoUrl = profile.links?.photo?.href
+                    Box(
+                        modifier = Modifier
+                            .size(88.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.2f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (!photoUrl.isNullOrBlank()) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(photoUrl)
+                                    .build(),
+                                contentDescription = "Photo de profil",
+                                modifier = Modifier
+                                    .size(88.dp)
+                                    .clip(CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            Text(
+                                text = "${profile.firstname?.firstOrNull() ?: ""}${profile.name?.firstOrNull() ?: ""}",
+                                style = MaterialTheme.typography.displaySmall,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                    }
+                    Text(
+                        text = "${profile.firstname.orEmpty()} ${profile.name.orEmpty()}".trim(),
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                    if (!profile.email.isNullOrBlank()) {
+                        Surface(
+                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f),
+                            shape = RoundedCornerShape(20.dp)
+                        ) {
+                            Text(
+                                text = profile.email,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 5.dp)
+                            )
+                        }
+                    }
+                    if (!profile.studentId.isNullOrBlank()) {
+                        Text(
+                            text = stringResource(R.string.profile_student_number, profile.studentId!!),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.75f)
+                        )
                     }
                 }
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_city),
-                value = profile.city
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_zipcode),
-                value = profile.zipcode
-            )
-            ProfileInfoItem(
-                label = stringResource(R.string.profile_country),
-                value = profile.country
-            )
-        }
-
-        // Emergency Contact Section
-        ProfileSection(title = stringResource(R.string.profile_section_emergency)) {
-            val emergency = profile.emergencyContact
-            if (emergency != null && (!emergency.firstname.isNullOrBlank() || !emergency.name.isNullOrBlank())) {
-                ProfileInfoItem(
-                    label = stringResource(R.string.profile_emergency_name),
-                    value = "${emergency.firstname.orEmpty()} ${emergency.name.orEmpty()}".trim()
-                )
-                ProfileInfoItem(
-                    label = stringResource(R.string.profile_emergency_type),
-                    value = emergency.type
-                )
-                ProfileInfoItem(
-                    label = stringResource(R.string.profile_emergency_mobile),
-                    value = emergency.mobile
-                )
-                ProfileInfoItem(
-                    label = stringResource(R.string.profile_emergency_telephone),
-                    value = emergency.telephone
-                )
-                ProfileInfoItem(
-                    label = stringResource(R.string.profile_emergency_work_phone),
-                    value = emergency.workPhone
-                )
-            } else {
-                Text(
-                    text = stringResource(R.string.profile_no_emergency_contact),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
             }
         }
 
-        // Logout Button
-        Button(
-            onClick = onLogout,
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.error
-            )
-        ) {
-            Text(text = stringResource(R.string.profile_logout))
+        // ── Personal information ──────────────────────────────────────
+        item {
+            InfoSection(
+                title = stringResource(R.string.profile_section_personal_info),
+                icon = Icons.Default.Person,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                InfoRow(icon = Icons.Default.Badge, label = stringResource(R.string.profile_ine), value = profile.ine)
+                InfoRow(icon = Icons.Default.Wc, label = stringResource(R.string.profile_civility), value = profile.civility)
+                InfoRow(icon = Icons.Default.Cake, label = stringResource(R.string.profile_birthday), value = profile.birthday?.let { formatDate(it) })
+                InfoRow(icon = Icons.Default.Place, label = stringResource(R.string.profile_birthplace), value = profile.birthplace)
+                InfoRow(icon = Icons.Default.Public, label = stringResource(R.string.profile_birth_country), value = profile.birthCountry)
+                InfoRow(icon = Icons.Default.Flag, label = stringResource(R.string.profile_nationality), value = profile.nationality)
+            }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        // ── Contact ───────────────────────────────────────────────────
+        item {
+            InfoSection(
+                title = stringResource(R.string.profile_section_contact),
+                icon = Icons.Default.ContactPhone,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                InfoRow(icon = Icons.Default.Email, label = stringResource(R.string.profile_email), value = profile.email)
+                InfoRow(icon = Icons.Default.AlternateEmail, label = stringResource(R.string.profile_personal_email), value = profile.personalMail)
+                InfoRow(icon = Icons.Default.PhoneAndroid, label = stringResource(R.string.profile_mobile), value = profile.mobile)
+                InfoRow(icon = Icons.Default.Phone, label = stringResource(R.string.profile_telephone), value = profile.telephone)
+            }
+        }
+
+        // ── Address ───────────────────────────────────────────────────
+        item {
+            InfoSection(
+                title = stringResource(R.string.profile_section_address),
+                icon = Icons.Default.Home,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                val fullAddress = buildString {
+                    profile.address1?.let { append(it) }
+                    if (!profile.address2.isNullOrBlank()) append("\n${profile.address2}")
+                }
+                InfoRow(icon = Icons.Default.LocationOn, label = stringResource(R.string.profile_address), value = fullAddress.takeIf { it.isNotBlank() })
+                InfoRow(icon = Icons.Default.LocationCity, label = stringResource(R.string.profile_city), value = profile.city)
+                InfoRow(icon = Icons.Default.MarkunreadMailbox, label = stringResource(R.string.profile_zipcode), value = profile.zipcode)
+                InfoRow(icon = Icons.Default.Public, label = stringResource(R.string.profile_country), value = profile.country)
+            }
+        }
+
+        // ── Emergency contact ─────────────────────────────────────────
+        item {
+            val emergency = profile.emergencyContact
+            InfoSection(
+                title = stringResource(R.string.profile_section_emergency),
+                icon = Icons.Default.LocalHospital,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                if (emergency != null && (!emergency.firstname.isNullOrBlank() || !emergency.name.isNullOrBlank())) {
+                    InfoRow(
+                        icon = Icons.Default.Person,
+                        label = stringResource(R.string.profile_emergency_name),
+                        value = "${emergency.firstname.orEmpty()} ${emergency.name.orEmpty()}".trim()
+                    )
+                    InfoRow(icon = Icons.Default.FamilyRestroom, label = stringResource(R.string.profile_emergency_type), value = emergency.type)
+                    InfoRow(icon = Icons.Default.PhoneAndroid, label = stringResource(R.string.profile_emergency_mobile), value = emergency.mobile)
+                    InfoRow(icon = Icons.Default.Phone, label = stringResource(R.string.profile_emergency_telephone), value = emergency.telephone)
+                    InfoRow(icon = Icons.Default.Work, label = stringResource(R.string.profile_emergency_work_phone), value = emergency.workPhone)
+                } else {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            text = stringResource(R.string.profile_no_emergency_contact),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+        }
+
+        // ── Logout button ─────────────────────────────────────────────
+        item {
+            Button(
+                onClick = onLogout,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.Logout,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.profile_logout),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
     }
 }
 
 @Composable
-private fun ProfileHeader(profile: ProfileResponseDto) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        // Profile Photo
-        Box(
-            modifier = Modifier
-                .size(120.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surfaceVariant),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "${profile.firstname?.firstOrNull() ?: ""}${profile.name?.firstOrNull() ?: ""}",
-                style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-
-        // Name
-        Text(
-            text = "${profile.firstname.orEmpty()} ${profile.name.orEmpty()}",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-
-        // Email
-        Text(
-            text = profile.email.orEmpty(),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
-
-@Composable
-private fun ProfileSection(
+private fun InfoSection(
     title: String,
+    icon: ImageVector,
+    modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
-            HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            // Section header
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.primaryContainer
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.padding(6.dp).size(18.dp)
+                    )
+                }
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
             content()
         }
     }
 }
 
 @Composable
-private fun ProfileInfoItem(
+private fun InfoRow(
+    icon: ImageVector,
     label: String,
     value: String?,
     modifier: Modifier = Modifier
 ) {
-    if (!value.isNullOrBlank()) {
-        Column(modifier = modifier) {
+    if (value.isNullOrBlank()) return
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(18.dp).padding(top = 2.dp)
+        )
+        Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontWeight = FontWeight.Medium
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
                 text = value,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
