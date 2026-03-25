@@ -2,6 +2,7 @@ package com.vlxx.myges.data.repositories
 
 import com.vlxx.myges.data.network.Api
 import com.vlxx.myges.data.network.AuthInterceptor
+import com.vlxx.myges.data.network.UnauthorizedInterceptor
 import com.vlxx.myges.domain.enums.AppState
 import com.vlxx.myges.domain.repositories.LocalSettingsRepository
 import com.vlxx.myges.domain.repositories.UserRepository
@@ -14,11 +15,19 @@ import java.util.regex.Pattern
 class UserRepositoryImpl(
     private val api: Api,
     private val localSettingsRepository: LocalSettingsRepository,
-    private val authInterceptor: AuthInterceptor
+    private val authInterceptor: AuthInterceptor,
+    private val unauthorizedInterceptor: UnauthorizedInterceptor
 ) : UserRepository {
 
     private val _appState = MutableStateFlow(AppState.SPLASH)
     override val appState: StateFlow<AppState> = _appState.asStateFlow()
+
+    init {
+        // Configure le callback pour gérer les erreurs 401
+        unauthorizedInterceptor.onUnauthorized = {
+            logout()
+        }
+    }
 
     override suspend fun login(email: String, password: String) {
         try {

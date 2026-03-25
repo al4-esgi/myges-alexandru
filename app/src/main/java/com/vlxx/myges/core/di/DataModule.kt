@@ -5,6 +5,7 @@ import com.vlxx.myges.data.constants.APP_READ_TIMEOUT
 import com.vlxx.myges.data.network.Api
 import com.vlxx.myges.data.network.AuthInterceptor
 import com.vlxx.myges.data.network.LoggingInterceptor
+import com.vlxx.myges.data.network.UnauthorizedInterceptor
 import com.vlxx.myges.data.repositories.AgendaRepositoryImpl
 import com.vlxx.myges.data.repositories.BannerRepositoryImpl
 import com.vlxx.myges.data.repositories.GradesRepositoryImpl
@@ -38,11 +39,13 @@ import java.util.concurrent.TimeUnit
 val dataModule = module {
 
     single { AuthInterceptor() }
+    single { UnauthorizedInterceptor() }
 
     single {
         OkHttpClient.Builder()
             .connectTimeout(APP_CONNECT_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(APP_READ_TIMEOUT, TimeUnit.SECONDS)
+            .addInterceptor(get<UnauthorizedInterceptor>())
             .addInterceptor(get<AuthInterceptor>())
             .addInterceptor(LoggingInterceptor())
             .followRedirects(false)
